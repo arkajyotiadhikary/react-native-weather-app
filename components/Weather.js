@@ -81,24 +81,24 @@ const Weather = () => {
 const styles = StyleSheet.create({
     weatherContainer: {
         flex: 1,
-        height: "100%",
+        marginVertical: 25,
         justifyContent: "center",
         alignItems: "center",
+    },
+    headerContainer: {
+        alignItems: "center",
+        justifyContent: "center",
+        marginBottom: 50,
     },
     location_text: {
         fontSize: 20,
         color: "#2F3543",
-        marginTop: 50,
         fontWeight: "500",
     },
     country: {
         color: "#2F3543",
     },
-    headerContainer: {
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-    },
+
     temp: {
         color: "#2F3543",
         marginStart: 20,
@@ -124,6 +124,7 @@ const styles = StyleSheet.create({
         flex: 2,
         alignItems: "center",
         justifyContent: "center",
+        marginBottom: 30,
     },
     bottomContainer: {
         flex: 1,
@@ -132,22 +133,18 @@ const styles = StyleSheet.create({
         alignItems: "center",
         height: 120,
         marginTop: 25,
-        marginBottom: 40,
     },
     nextweather: {
         flex: 1,
         width: "122%",
         flexDirection: "row",
-        justifyContent: "space-around", // Adjusted justifyContent
+        justifyContent: "space-around",
         alignItems: "center",
-        paddingHorizontal: 100, // Added paddingHorizontal for spacing
+        paddingHorizontal: 100,
     },
     nextweatherDate: {
         width: 80,
     },
-    // nextweathertext: {
-    //     alignContent: "center",
-    // },
 });
 
 export default Weather;
