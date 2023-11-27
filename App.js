@@ -1,21 +1,40 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState, useEffect } from "react";
+import { StyleSheet, Text, View } from "react-native";
+
+// components
+import Weather from "./components/Weather";
+
+// services
+import { fetchWeather } from "./services/WeatherServices";
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+    // States
+    const { isLoading, setIsLoading } = useState(false);
+    const { temp, setTemp } = useState(0);
+    const { weatherCondition, setWeatherCondition } = useState(null);
+    const { error, setError } = useState(null);
+
+    // call get location
+    useEffect(() => {});
+
+    return (
+        <View style={styles.container}>
+            {isLoading ? (
+                <Text>fetching data</Text>
+            ) : (
+                <View>
+                    <Weather />
+                </View>
+            )}
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+    container: {
+        flex: 1,
+        backgroundColor: "#e2ebf2",
+        alignItems: "center",
+        justifyContent: "center",
+    },
 });
