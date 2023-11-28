@@ -11,10 +11,8 @@ export const _fetchWeather = async () => {
         });
 
         const res = await axios.get(
-            `http://api.openweathermap.org/data/2.5/weather?lat=${location.lat}&lon=${location.lon}&APPID=${API_KEY}&units=metric`
+            `http://api.openweathermap.org/data/2.5/forecast?lat=${location.lat}&lon=${location.lon}&APPID=${API_KEY}&units=metric`
         );
-
-        console.log(res.data);
 
         return res.data;
     } catch (error) {

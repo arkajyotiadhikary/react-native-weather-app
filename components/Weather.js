@@ -1,6 +1,7 @@
 /*
     @TODO 
     * Have to make the first letter of the weather description capitalize
+    * have to convert the dates to actual date name
 */
 
 import React, { useState, useEffect } from "react";
@@ -8,24 +9,28 @@ import { View, Text, StyleSheet } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import { _fetchWeather, _getLocation } from "../services/WeatherServices";
+import { _getWeahterForecast } from "../android/helpers/WeatherHelper";
 
 const Weather = () => {
     const [currentLoc, setCurrentLoc] = useState(null);
     const [city, setCity] = useState(null);
+    const [country, setCountry] = useState("");
     const [tempreture, setTempreture] = useState(0);
     const [description, setDescription] = useState("");
     const [windSpeed, setWindSpeed] = useState(0);
     const [icon, setIcon] = useState("");
+    const [weatherForecast, setWeatherForecast] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
             const data = await _fetchWeather();
-            setCity(data.name);
-
-            setTempreture(Math.round(data.main.temp));
-            setDescription(data.weather[0].description);
-            setWindSpeed(data.wind.speed);
-            setIcon(data.weather[0].icon);
+            setCity(data.city.name);
+            setCountry(data.city.country);
+            setTempreture(Math.round(data.list[0].main.temp));
+            setDescription(data.list[0].weather[0].description);
+            setWindSpeed(data.list[0].wind.speed);
+            setIcon(data.list[0].weather[0].icon);
+            setWeatherForecast(_getWeahterForecast(data.list));
         };
         fetchData();
     }, []);
@@ -34,7 +39,7 @@ const Weather = () => {
         <View style={styles.weatherContainer}>
             <View style={styles.headerContainer}>
                 <Text style={styles.location_text}>{city}</Text>
-                <Text style={styles.country}>India</Text>
+                <Text style={styles.country}>{country}</Text>
             </View>
             <View style={styles.bodyContainer}>
                 <img src={`https://openweathermap.org/img/wn/${icon}@2x.png`} />
@@ -51,42 +56,17 @@ const Weather = () => {
                 </View>
             </View>
             <View style={styles.bottomContainer}>
-                <View style={styles.nextweather}>
-                    <Text style={styles.nextweatherDate}>Tue ,Apr 14</Text>
-                    <MaterialCommunityIcons
-                        size={20}
-                        name="weather-windy-variant"
-                        color={"#2F3543"}
-                    />
-                    <Text>23°</Text>
-                </View>
-                <View style={styles.nextweather}>
-                    <Text style={styles.nextweatherDate}>Wed ,Apr 15</Text>
-                    <MaterialCommunityIcons
-                        size={20}
-                        name="weather-windy-variant"
-                        color={"#2F3543"}
-                    />
-                    <Text>19°</Text>
-                </View>
-                <View style={styles.nextweather}>
-                    <Text style={styles.nextweatherDate}>Thr ,Apr 16</Text>
-                    <MaterialCommunityIcons
-                        size={20}
-                        name="weather-windy-variant"
-                        color={"#2F3543"}
-                    />
-                    <Text>21°</Text>
-                </View>
-                <View style={styles.nextweather}>
-                    <Text style={styles.nextweatherDate}>Fri ,Apr 17</Text>
-                    <MaterialCommunityIcons
-                        size={20}
-                        name="weather-windy-variant"
-                        color={"#2F3543"}
-                    />
-                    <Text>20°</Text>
-                </View>
+                {weatherForecast.map((weather, id) => (
+                    <View key={id} style={styles.nextweather}>
+                        <Text style={styles.nextweatherDate}>
+                            {weather.dt_txt.split(" ")[0]}
+                        </Text>
+                        <img
+                            src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}.png`}
+                        />
+                        <Text>{Math.floor(weather.main.temp)}°</Text>
+                    </View>
+                ))}
             </View>
         </View>
     );
@@ -110,6 +90,8 @@ const styles = StyleSheet.create({
         fontWeight: "500",
     },
     country: {
+        fontSize: 12,
+        marginTop: 4,
         color: "#2F3543",
     },
 
