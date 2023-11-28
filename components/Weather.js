@@ -1,3 +1,8 @@
+/*
+    @TODO 
+    * Have to make the first letter of the weather description capitalize
+*/
+
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -7,25 +12,34 @@ import { _fetchWeather, _getLocation } from "../services/WeatherServices";
 const Weather = () => {
     const [currentLoc, setCurrentLoc] = useState(null);
     const [city, setCity] = useState(null);
+    const [tempreture, setTempreture] = useState(0);
+    const [description, setDescription] = useState("");
+    const [windSpeed, setWindSpeed] = useState(0);
+    const [icon, setIcon] = useState("");
 
     useEffect(() => {
-        // _fetchWeather();
+        const fetchData = async () => {
+            const data = await _fetchWeather();
+            setCity(data.name);
+
+            setTempreture(Math.round(data.main.temp));
+            setDescription(data.weather[0].description);
+            setWindSpeed(data.wind.speed);
+            setIcon(data.weather[0].icon);
+        };
+        fetchData();
     }, []);
 
     return (
         <View style={styles.weatherContainer}>
             <View style={styles.headerContainer}>
-                <Text style={styles.location_text}>Guwahati, Assam</Text>
+                <Text style={styles.location_text}>{city}</Text>
                 <Text style={styles.country}>India</Text>
             </View>
             <View style={styles.bodyContainer}>
-                <MaterialCommunityIcons
-                    size={48}
-                    name="weather-partly-rainy"
-                    color={"#2F3543"}
-                />
-                <Text style={styles.temp}>23°</Text>
-                <Text style={styles.description}>Mostly Cloudy</Text>
+                <img src={`https://openweathermap.org/img/wn/${icon}@2x.png`} />
+                <Text style={styles.temp}>{tempreture}°</Text>
+                <Text style={styles.description}>{description}</Text>
                 <Text>wind</Text>
                 <View style={styles.wind}>
                     <MaterialCommunityIcons
@@ -33,7 +47,7 @@ const Weather = () => {
                         name="weather-windy"
                         color={"#2F3543"}
                     />
-                    <Text>3 km/h</Text>
+                    <Text>{windSpeed} km/h</Text>
                 </View>
             </View>
             <View style={styles.bottomContainer}>
