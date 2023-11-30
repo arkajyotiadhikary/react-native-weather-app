@@ -5,11 +5,13 @@
 */
 
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Image } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import { _fetchWeather, _getLocation } from "../services/WeatherServices";
 import { _getWeahterForecast } from "../android/helpers/WeatherHelper";
+
+const MINUTE_MS = 60000;
 
 const Weather = () => {
     const [currentLoc, setCurrentLoc] = useState(null);
@@ -22,18 +24,29 @@ const Weather = () => {
     const [weatherForecast, setWeatherForecast] = useState([]);
 
     useEffect(() => {
-        const fetchData = async () => {
-            const data = await _fetchWeather();
-            setCity(data.city.name);
-            setCountry(data.city.country);
-            setTempreture(Math.round(data.list[0].main.temp));
-            setDescription(data.list[0].weather[0].description);
-            setWindSpeed(data.list[0].wind.speed);
-            setIcon(data.list[0].weather[0].icon);
-            setWeatherForecast(_getWeahterForecast(data.list));
-        };
         fetchData();
     }, []);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            fetchData();
+        }, MINUTE_MS);
+
+        return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
+    }, []);
+
+    const fetchData = async () => {
+        const data = await _fetchWeather();
+        setCity(data.city.name);
+        setCountry(data.city.country);
+        setTempreture(Math.round(data.list[0].main.temp));
+        setDescription(data.list[0].weather[0].description);
+        setWindSpeed(data.list[0].wind.speed);
+        setIcon(data.list[0].weather[0].icon);
+        setWeatherForecast(_getWeahterForecast(data.list));
+    };
+
+    console.log(`Icon: ${icon}`);
 
     return (
         <View style={styles.weatherContainer}>
@@ -42,7 +55,14 @@ const Weather = () => {
                 <Text style={styles.country}>{country}</Text>
             </View>
             <View style={styles.bodyContainer}>
-                <img src={`https://openweathermap.org/img/wn/${icon}@2x.png`} />
+                <Image
+                    source={{
+                        uri: `https://openweathermap.org/img/wn/${icon}@2x.png`,
+                    }}
+                    style={{ width: 110, height: 50 }}
+                />
+
+                {/* <img src={`https://openweathermap.org/img/wn/${icon}@2x.png`} /> */}
                 <Text style={styles.temp}>{tempreture}°</Text>
                 <Text style={styles.description}>{description}</Text>
                 <Text>wind</Text>
@@ -61,8 +81,11 @@ const Weather = () => {
                         <Text style={styles.nextweatherDate}>
                             {weather.dt_txt.split(" ")[0]}
                         </Text>
-                        <img
-                            src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}.png`}
+                        <Image
+                            source={{
+                                uri: `https://openweathermap.org/img/wn/${weather.weather[0].icon}.png`,
+                            }}
+                            style={{ width: 50, height: 50 }}
                         />
                         <Text>{Math.floor(weather.main.temp)}°</Text>
                     </View>

@@ -1,4 +1,5 @@
 import axios from "axios";
+import Geolocation from "@react-native-community/geolocation";
 import { API_KEY } from "../utils/WeatherAPIKey";
 
 export const _fetchWeather = async () => {
@@ -22,13 +23,19 @@ export const _fetchWeather = async () => {
 };
 
 export const _getLocation = (successCallback) => {
-    navigator.geolocation.watchPosition((pos) => {
-        const location = {
-            lat: pos.coords.latitude,
-            lon: pos.coords.longitude,
-        };
-        successCallback(location);
-    });
+    Geolocation.watchPosition(
+        (pos) => {
+            const location = {
+                lat: pos.coords.latitude,
+                lon: pos.coords.longitude,
+            };
+            successCallback(location);
+        },
+        (err) => {
+            console.error("Error getting location:", err);
+            errorCallback(err);
+        }
+    );
 };
 
 export const _getCity = (successCallback) => {};
