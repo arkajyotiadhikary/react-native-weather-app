@@ -9,13 +9,13 @@ import { View, Text, StyleSheet, Image } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import { _fetchWeather, _getLocation } from "../services/WeatherServices";
-import { _getWeahterForecast } from "../android/helpers/WeatherHelper";
-import { CapitalizeFirstLetter } from "../helper/StringHelper";
+import { _getWeahterForecast } from "../helpers/WeatherHelper";
+import { CapitalizeFirstLetter } from "../helpers/StringHelper";
 
 const MINUTE_MS = 60000;
 
 const Weather = () => {
-    const [currentLoc, setCurrentLoc] = useState(null);
+    const [loaded, setLoaded] = useState(false);
     const [city, setCity] = useState(null);
     const [country, setCountry] = useState("");
     const [tempreture, setTempreture] = useState(0);
@@ -38,6 +38,7 @@ const Weather = () => {
 
     const fetchData = async () => {
         const data = await _fetchWeather();
+        setLoaded(true);
         setCity(data.city.name);
         setCountry(data.city.country);
         setTempreture(Math.round(data.list[0].main.temp));
@@ -49,7 +50,7 @@ const Weather = () => {
         setWeatherForecast(_getWeahterForecast(data.list));
     };
 
-    return (
+    return loaded ? (
         <View style={styles.weatherContainer}>
             <View style={styles.headerContainer}>
                 <Text style={styles.location_text}>{city}</Text>
@@ -60,7 +61,7 @@ const Weather = () => {
                     source={{
                         uri: `https://openweathermap.org/img/wn/${icon}@2x.png`,
                     }}
-                    style={{ width: 110, height: 50 }}
+                    style={{ width: 110, height: 55 }}
                 />
 
                 {/* <img src={`https://openweathermap.org/img/wn/${icon}@2x.png`} /> */}
@@ -92,6 +93,28 @@ const Weather = () => {
                     </View>
                 ))}
             </View>
+        </View>
+    ) : (
+        <View
+            style={{
+                flex: 1,
+                alignItems: "center",
+                justifyContent: "center",
+            }}
+        >
+            <Image
+                source={require("../assets/gifs/icons8-rain-cloud-100.png")}
+                style={{ width: 96, height: 96 }}
+            />
+            <Text
+                style={{
+                    marginTop: 10,
+                    fontWeight: "bold",
+                    fontSize: 20,
+                }}
+            >
+                Loading Data
+            </Text>
         </View>
     );
 };
