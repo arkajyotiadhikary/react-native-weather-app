@@ -10,6 +10,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import { _fetchWeather, _getLocation } from "../services/WeatherServices";
 import { _getWeahterForecast } from "../android/helpers/WeatherHelper";
+import { CapitalizeFirstLetter } from "../helper/StringHelper";
 
 const MINUTE_MS = 60000;
 
@@ -40,13 +41,13 @@ const Weather = () => {
         setCity(data.city.name);
         setCountry(data.city.country);
         setTempreture(Math.round(data.list[0].main.temp));
-        setDescription(data.list[0].weather[0].description);
+        setDescription(
+            CapitalizeFirstLetter(data.list[0].weather[0].description)
+        );
         setWindSpeed(data.list[0].wind.speed);
         setIcon(data.list[0].weather[0].icon);
         setWeatherForecast(_getWeahterForecast(data.list));
     };
-
-    console.log(`Icon: ${icon}`);
 
     return (
         <View style={styles.weatherContainer}>
