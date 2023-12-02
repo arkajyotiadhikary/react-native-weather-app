@@ -69,7 +69,7 @@ export default StyleSheet.create({
         fontWeight: "500",
     },
     exData: {
-        width: "50%",
+        width: "110%",
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
