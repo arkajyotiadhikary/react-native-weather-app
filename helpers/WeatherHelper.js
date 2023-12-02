@@ -41,7 +41,7 @@ export const _getWeahterForecast = (weatherForecast = []) => {
                   finalArray[count - 1]["weather_range"] = [weatherForecast[i].main.temp, 0];
             }
             // BREAK IF THE ARRAY HAS 4 ELEMENT
-            if (count === 5 && finalArray[count - 1]["weather_range"][1] !== 0) break;
+            if (count === 4 && finalArray[count - 1]["weather_range"][1] !== 0) break;
       }
       console.log("final", finalArray);
       return finalArray;
