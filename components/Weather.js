@@ -113,7 +113,7 @@ const Weather = () => {
                                           }}
                                           style={styles.nextweatherImg}
                                     />
-                                    <Text>
+                                    <Text style={styles.nextweatherTemp}>
                                           {Math.floor(weather.weather_range[0])}° -{" "}
                                           {Math.floor(weather.weather_range[1])}°
                                     </Text>

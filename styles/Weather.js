@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import colors from "../assets/colors.json";
 export default StyleSheet.create({
       //* loading section
       loadingSection: {
@@ -32,13 +33,13 @@ export default StyleSheet.create({
       },
       location_text: {
             fontSize: 20,
-            color: "#2F3543",
+            color: `${colors.text_color}`,
             fontWeight: "500",
       },
       country: {
             fontSize: 12,
             marginTop: 4,
-            color: "#2F3543",
+            color: `${colors.text_color}`,
       },
 
       //* body component
@@ -49,23 +50,24 @@ export default StyleSheet.create({
             marginBottom: 30,
       },
       temp: {
-            color: "#2F3543",
+            color: `${colors.text_color}`,
             marginStart: 20,
             fontSize: 100,
             marginTop: 10,
       },
       tempText: {
             fontSize: 48,
-            color: "#2F3543",
+            color: `${colors.text_color}`,
       },
       weatherImg: {
-            height: 50,
+            color: `${colors.icon_colors}`,
+            height: 80,
             width: 110,
       },
       description: {
             margin: 30,
             fontSize: 15,
-            color: "#2F3543",
+            color: `${colors.text_color}`,
             fontWeight: "500",
       },
       exData: {
@@ -81,6 +83,7 @@ export default StyleSheet.create({
             alignItems: "center",
       },
       exDataText: {
+            color: `${colors.text_color}`,
             flexDirection: "row",
             justifyContent: "center",
             alignItems: "center",
@@ -112,5 +115,10 @@ export default StyleSheet.create({
       },
       nextweatherDate: {
             width: 80,
+            color: `${colors.text_color}`,
+      },
+      nextweatherTemp: {
+            width: 54,
+            color: `${colors.text_color}`,
       },
 });
