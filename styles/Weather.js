@@ -60,7 +60,6 @@ export default StyleSheet.create({
             color: `${colors.text_color}`,
       },
       weatherImg: {
-            color: `${colors.icon_colors}`,
             height: 80,
             width: 110,
       },

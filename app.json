@@ -1,11 +1,17 @@
 {
   "expo": {
     "name": "weather-app",
-    "slug": "weather-app",
+    "slug": "test",
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "ee2cf3da-3aff-4128-9deb-05fcb8ac1d1f"
+      }
+    },
+    "owner": "arkajyoti"
   },
   "name": "weather-app"
 }

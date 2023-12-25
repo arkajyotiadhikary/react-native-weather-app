@@ -10,8 +10,6 @@ export const _fetchCurrentWeather = async () => {
                   `http://api.openweathermap.org/data/2.5/weather?lat=${location.lat}&lon=${location.lon}&APPID=${API_KEY}&units=metric`
             );
 
-            console.log("current weather:", res.data);
-
             return res.data;
       } catch (error) {
             console.error("Error fetching weather:", error);
@@ -27,7 +25,6 @@ export const _fetchWeatherForcast = async () => {
                   `http://api.openweathermap.org/data/2.5/forecast?lat=${location.lat}&lon=${location.lon}&APPID=${API_KEY}&units=metric`
             );
 
-            console.log("weather forecast:", res.data);
             return res.data;
       } catch (error) {
             console.error("Error fetching weather:", error);
