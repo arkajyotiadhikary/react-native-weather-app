@@ -7,11 +7,11 @@ import {
       Button,
       KeyboardAvoidingView,
 } from "react-native";
-
-export default SerchModal = (props) => {
-      const { isModalVisible } = props;
+import { useSelector } from "react-redux";
+export default SerchModal = () => {
+      const modalState = useSelector((state) => state.modal.isVisible);
       return (
-            <Modal visible={isModalVisible} transparent={true}>
+            <Modal visible={modalState} transparent={true}>
                   <View style={styles.popup}>
                         <View style={styles.content}>
                               <Text style={styles.modalHeader}>Search your location</Text>

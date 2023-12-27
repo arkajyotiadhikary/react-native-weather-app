@@ -7,34 +7,41 @@ import Weather from "./components/Weather";
 import SearchComponent from "./components/SearchComponent";
 import SearchModal from "./components/SearchModal";
 
-// services
+// redux store]
+import store from "./store";
+import { Provider } from "react-redux";
 
 export default function App() {
       // States
       const [isLoading, setIsLoading] = useState(false);
       const [isModalVisible, setIsModalVisible] = useState(true);
-      // call get location
-      useEffect(() => {}, []);
 
       return (
-            <View style={styles.container}>
+            <KeyboardAvoidingView behavior="padding" style={styles.container}>
                   {isLoading ? (
                         <Text>fetching data</Text>
                   ) : (
-                        <View>
-                              <Weather />
-                              <SearchComponent />
-                              <SearchModal isModalVisible={isModalVisible} />
-                        </View>
+                        <Provider store={store}>
+                              <View>
+                                    <SearchModal />
+                                    <Weather />
+                                    <SearchComponent />
+                              </View>
+                        </Provider>
                   )}
-            </View>
+            </KeyboardAvoidingView>
       );
 }
 
 const styles = StyleSheet.create({
       container: {
             flex: 1,
-            height: "100%",
+            backgroundColor: `${colors.app_background_color}`,
+            alignItems: "center",
+            justifyContent: "center",
+      },
+      container_main: {
+            flex: 1,
             backgroundColor: `${colors.app_background_color}`,
             alignItems: "center",
             justifyContent: "center",
