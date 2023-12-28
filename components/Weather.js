@@ -53,7 +53,7 @@ const Weather = () => {
             setHumidity(dataCurrent.main.humidity);
             setDescription(CapitalizeFirstLetter(dataCurrent.weather[0].description));
             setWindSpeed(dataCurrent.wind.speed);
-            setIcon(dataCurrent.weather[0].icon);
+            setIcon(dataCurrent.weather[0].icon.slice(0, -1));
             setWeatherForecast(_getWeahterForecast(dataForcast.list));
       };
 
@@ -66,7 +66,7 @@ const Weather = () => {
                   <View style={styles.bodyContainer}>
                         <Image
                               source={{
-                                    uri: `https://openweathermap.org/img/wn/${icon}@2x.png`,
+                                    uri: `https://openweathermap.org/img/wn/${icon}n@2x.png`,
                               }}
                               style={styles.weatherImg}
                         />
@@ -109,7 +109,10 @@ const Weather = () => {
                                     </Text>
                                     <Image
                                           source={{
-                                                uri: `https://openweathermap.org/img/wn/${weather.weather[0].icon}.png`,
+                                                uri: `https://openweathermap.org/img/wn/${weather.weather[0].icon.slice(
+                                                      0,
+                                                      -1
+                                                )}n.png`,
                                           }}
                                           style={styles.nextweatherImg}
                                     />

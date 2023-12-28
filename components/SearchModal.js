@@ -11,20 +11,22 @@ import { useSelector } from "react-redux";
 export default SerchModal = () => {
       const modalState = useSelector((state) => state.modal.isVisible);
       return (
-            <Modal visible={modalState} transparent={true}>
-                  <View style={styles.popup}>
-                        <View style={styles.content}>
-                              <Text style={styles.modalHeader}>Search your location</Text>
-                              <View style={styles.input}>
-                                    <TextInput
-                                          placeholder="Type something..."
-                                          style={styles.textinput}
-                                    />
-                                    <Button title="Submit"></Button>
+            <KeyboardAvoidingView>
+                  <Modal visible={modalState} transparent={true}>
+                        <View style={styles.popup}>
+                              <View style={styles.content}>
+                                    <Text style={styles.modalHeader}>Search your location</Text>
+                                    <View style={styles.input}>
+                                          <TextInput
+                                                placeholder="Type something..."
+                                                style={styles.textinput}
+                                          />
+                                          <Button title="Submit"></Button>
+                                    </View>
                               </View>
                         </View>
-                  </View>
-            </Modal>
+                  </Modal>
+            </KeyboardAvoidingView>
       );
 };
 
