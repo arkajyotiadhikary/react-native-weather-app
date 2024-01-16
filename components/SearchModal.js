@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
       Text,
       View,
@@ -7,26 +8,59 @@ import {
       Button,
       KeyboardAvoidingView,
 } from "react-native";
-import { useSelector } from "react-redux";
-export default SerchModal = () => {
+import { useSelector, useDispatch } from "react-redux";
+import { setFalse } from "../features/modalSlice";
+import { setLocation, setChangeData } from "../features/locationSlice";
+import { _getSearchLocation } from "../services/WeatherServices";
+
+const SearchModal = () => {
       const modalState = useSelector((state) => state.modal.isVisible);
+      const dispatch = useDispatch();
+      const [searchedLocation, setSearchedLocation] = useState("");
+
+      const handleChange = (text) => {
+            setSearchedLocation(text);
+            dispatch(setLocation({ text }));
+      };
+
+      const handleSubmit = async () => {
+            try {
+                  const location = await _getSearchLocation(searchedLocation);
+                  dispatch(setLocation(location));
+                  console.log("location searched ", location);
+            } catch (error) {
+                  console.error("Error fetching location:", error);
+            } finally {
+                  dispatch(setChangeData(true));
+                  dispatch(setFalse(true));
+            }
+      };
+
       return (
-            <KeyboardAvoidingView>
-                  <Modal visible={modalState} transparent={true}>
-                        <View style={styles.popup}>
-                              <View style={styles.content}>
-                                    <Text style={styles.modalHeader}>Search your location</Text>
-                                    <View style={styles.input}>
+            <Modal
+                  visible={modalState}
+                  transparent={true}
+                  onRequestClose={() => dispatch(setFalse())}
+            >
+                  <View style={styles.popup}>
+                        <View style={styles.content}>
+                              <Text style={styles.modalHeader}>Search your location</Text>
+                              <View style={styles.input}>
+                                    <KeyboardAvoidingView
+                                          behavior="padding"
+                                          style={styles.textinput}
+                                    >
                                           <TextInput
                                                 placeholder="Type something..."
-                                                style={styles.textinput}
+                                                onChangeText={(text) => handleChange(text)}
                                           />
-                                          <Button title="Submit"></Button>
-                                    </View>
+                                    </KeyboardAvoidingView>
+
+                                    <Button title="Submit" onPress={handleSubmit} />
                               </View>
                         </View>
-                  </Modal>
-            </KeyboardAvoidingView>
+                  </View>
+            </Modal>
       );
 };
 
@@ -68,3 +102,5 @@ const styles = StyleSheet.create({
             marginEnd: "5%",
       },
 });
+
+export default SearchModal;

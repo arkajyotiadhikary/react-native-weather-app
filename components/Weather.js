@@ -7,18 +7,18 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, Image } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useSelector } from "react-redux";
 
 import {
       _fetchCurrentWeather,
       _fetchWeatherForcast,
-      _getLocation,
+      _getCurrentLocation,
+      _getSearchLocation,
 } from "../services/WeatherServices";
 import { _getWeahterForecast } from "../helpers/WeatherHelper";
 import { CapitalizeFirstLetter, FormateDate } from "../helpers/StringHelper";
 
 import styles from "../styles/Weather";
-
-const MINUTE_MS = 60000;
 
 const Weather = () => {
       const [loaded, setLoaded] = useState(false);
@@ -29,23 +29,40 @@ const Weather = () => {
       const [windSpeed, setWindSpeed] = useState(0);
       const [humidity, setHumidity] = useState(0);
       const [icon, setIcon] = useState("");
+      const [locationState, setLocationState] = useState("");
       const [weatherForecast, setWeatherForecast] = useState([]);
 
+      const _locState = useSelector((state) => state.location.location.payload);
+      // this is a trigger to change data in view. controlling using state management
+      const _changeData = useSelector((state) => state.location.changeData);
+      const _fetchData = useSelector((state) => state.fetchData);
+
       useEffect(() => {
-            fetchData();
+            /* 
+                  *NOTE
+                  On app start up it sets up the devices current location and 
+                  search weather data
+            */
+            _getCurrentLocation().then((location) => fetchData(location));
+
+            console.log("loc state", _locState);
+            console.log("fetch data", _fetchData);
       }, []);
 
       useEffect(() => {
-            const interval = setInterval(() => {
-                  fetchData();
-            }, MINUTE_MS);
+            if (_changeData) console.log("loc state updated:", _locState);
+            fetchData(_locState);
+      }, [_changeData]);
 
-            return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
-      }, []);
-
-      const fetchData = async () => {
-            const dataForcast = await _fetchWeatherForcast();
-            const dataCurrent = await _fetchCurrentWeather();
+      const fetchData = async (location) => {
+            /*
+                  *NOTE
+                  we need two request because fectch current weather
+                  is for current weather and fecth weather forcast is 
+                  for upcoming weather updates
+            */
+            const dataForcast = await _fetchWeatherForcast(location);
+            const dataCurrent = await _fetchCurrentWeather(location);
             setLoaded(true);
             setCity(dataCurrent.name);
             setCountry(dataCurrent.sys.country);

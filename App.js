@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, KeyboardAvoidingView } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import colors from "./assets/colors.json";
 
 // components
@@ -17,7 +17,7 @@ export default function App() {
       const [isModalVisible, setIsModalVisible] = useState(true);
 
       return (
-            <KeyboardAvoidingView behavior="padding" style={styles.container}>
+            <View style={styles.container}>
                   {isLoading ? (
                         <Text>fetching data</Text>
                   ) : (
@@ -29,7 +29,7 @@ export default function App() {
                               </View>
                         </Provider>
                   )}
-            </KeyboardAvoidingView>
+            </View>
       );
 }
 
