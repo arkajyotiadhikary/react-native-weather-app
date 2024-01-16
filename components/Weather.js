@@ -15,6 +15,7 @@ import {
       _getCurrentLocation,
       _getSearchLocation,
 } from "../services/WeatherServices";
+import { setChangeData } from "../features/locationSlice";
 import { _getWeahterForecast } from "../helpers/WeatherHelper";
 import { CapitalizeFirstLetter, FormateDate } from "../helpers/StringHelper";
 
@@ -29,13 +30,11 @@ const Weather = () => {
       const [windSpeed, setWindSpeed] = useState(0);
       const [humidity, setHumidity] = useState(0);
       const [icon, setIcon] = useState("");
-      const [locationState, setLocationState] = useState("");
       const [weatherForecast, setWeatherForecast] = useState([]);
 
       const _locState = useSelector((state) => state.location.location.payload);
       // this is a trigger to change data in view. controlling using state management
       const _changeData = useSelector((state) => state.location.changeData);
-      const _fetchData = useSelector((state) => state.fetchData);
 
       useEffect(() => {
             /* 
@@ -44,13 +43,10 @@ const Weather = () => {
                   search weather data
             */
             _getCurrentLocation().then((location) => fetchData(location));
-
-            console.log("loc state", _locState);
-            console.log("fetch data", _fetchData);
       }, []);
 
       useEffect(() => {
-            if (_changeData) console.log("loc state updated:", _locState);
+            if (_changeData) setChangeData(false);
             fetchData(_locState);
       }, [_changeData]);
 

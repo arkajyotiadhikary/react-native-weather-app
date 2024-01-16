@@ -1,5 +1,3 @@
-import store from "../store";
-import { setData } from "../features/fetchDataSlice";
 import axios from "axios";
 import Geolocation from "@react-native-community/geolocation";
 import { API_KEY } from "../utils/WeatherAPIKey";
@@ -10,7 +8,6 @@ export const _fetchCurrentWeather = async (location) => {
                   `http://api.openweathermap.org/data/2.5/weather?lat=${location.lat}&lon=${location.lon}&APPID=${API_KEY}&units=metric`
             );
             console.log("fetched current data", res.data);
-            store.dispatch(setData(res.data));
             return res.data;
       } catch (error) {
             console.error("Error fetching weather:", error);
