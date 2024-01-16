@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { setFalse } from "../features/modalSlice";
-import { setLocation, setChangeData } from "../features/locationSlice";
+import { setLocation, setChangeData, setCurrentLocation } from "../features/locationSlice";
 import { _getSearchLocation } from "../services/WeatherServices";
 
 const SearchModal = () => {
@@ -33,6 +33,7 @@ const SearchModal = () => {
             } finally {
                   dispatch(setChangeData(true));
                   dispatch(setFalse(true));
+                  dispatch(setCurrentLocation(true));
             }
       };
 

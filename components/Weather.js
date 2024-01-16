@@ -7,7 +7,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, Image } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import {
       _fetchCurrentWeather,
@@ -15,13 +15,18 @@ import {
       _getCurrentLocation,
       _getSearchLocation,
 } from "../services/WeatherServices";
-import { setChangeData } from "../features/locationSlice";
+
+// features
+import { setChangeData, setCurrentLocation } from "../features/locationSlice";
+// helpers
 import { _getWeahterForecast } from "../helpers/WeatherHelper";
 import { CapitalizeFirstLetter, FormateDate } from "../helpers/StringHelper";
 
 import styles from "../styles/Weather";
 
 const Weather = () => {
+      const dispatch = useDispatch();
+
       const [loaded, setLoaded] = useState(false);
       const [city, setCity] = useState(null);
       const [country, setCountry] = useState("");
@@ -34,7 +39,7 @@ const Weather = () => {
 
       const _locState = useSelector((state) => state.location.location.payload);
       // this is a trigger to change data in view. controlling using state management
-      const _changeData = useSelector((state) => state.location.changeData);
+      const _changeData = useSelector((state) => state.location.changeData.payload);
 
       useEffect(() => {
             /* 
@@ -46,8 +51,15 @@ const Weather = () => {
       }, []);
 
       useEffect(() => {
-            if (_changeData) setChangeData(false);
-            fetchData(_locState);
+            console.log("chamge data", _changeData);
+            // if change data is true set location to current else set the location to the specific location
+            if (_changeData) {
+                  setChangeData(false);
+                  fetchData(_locState);
+            } else {
+                  _getCurrentLocation().then((location) => fetchData(location));
+                  dispatch(setCurrentLocation(false));
+            }
       }, [_changeData]);
 
       const fetchData = async (location) => {

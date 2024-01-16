@@ -6,6 +6,7 @@ import colors from "./assets/colors.json";
 import Weather from "./components/Weather";
 import SearchComponent from "./components/SearchComponent";
 import SearchModal from "./components/SearchModal";
+import CurrentLocationTriggerComponent from "./components/CurrentLocationTriggerComponent";
 
 // redux store]
 import store from "./store";
@@ -26,6 +27,7 @@ export default function App() {
                                     <SearchModal />
                                     <Weather />
                                     <SearchComponent />
+                                    <CurrentLocationTriggerComponent />
                               </View>
                         </Provider>
                   )}

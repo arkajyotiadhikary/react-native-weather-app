@@ -8,6 +8,7 @@ export const locationSlice = createSlice({
                   lon: "",
             },
             changeData: false,
+            currentLocation: true,
       },
       reducers: {
             setLocation: (state, payload) => {
@@ -16,9 +17,12 @@ export const locationSlice = createSlice({
             setChangeData: (state, payload) => {
                   state.changeData = payload;
             },
+            setCurrentLocation: (state, payload) => {
+                  state.currentLocation = payload;
+            },
       },
 });
 
-export const { setLocation, setChangeData } = locationSlice.actions;
+export const { setLocation, setChangeData, setCurrentLocation } = locationSlice.actions;
 
 export default locationSlice.reducer;
